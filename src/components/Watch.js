@@ -1,57 +1,89 @@
 import React from 'react';
-import './Watch.css'
+import './Watch.css';
 
 export default class Watch extends React.Component {
+  state = {
+    secondsDegrees: null,
+    minutesDegrees: null,
+    hoursDegrees: null,
+    hoursText: null,
+    minutesText: null,
+    interval: null,
+  };
+
   componentDidMount() {
-    const secondHand = document.querySelector('.second-hand');
-    const minuteHand = document.querySelector('.min-hand');
-    const hourHand = document.querySelector('.hour-hand');
-    const hoursText = document.querySelector('#hours');
-    const minutesText = document.querySelector('#minutes');
+    const self = this;
 
     function setDate() {
-      const now = new Date();
+      let now = new Date();
 
       const seconds = now.getSeconds();
       const minutes = now.getMinutes();
-      const hours = now.getHours();
+      const hours =
+        now.getHours() - self.props.moscowOffset + self.props.offset;
 
       const secondsDegrees = (seconds / 60) * 360 + 90;
       const minutesDegrees = (minutes / 60) * 360 + 90;
       const hoursDegrees = (hours / 12) * 360 + 90;
 
-      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
-      minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
-      hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+      const hoursText = '' + (hours % 12 < 10 ? '0' : ' ') + (hours % 12);
+      const minutesText = '' + (minutes < 10 ? '0' : '') + minutes;
 
-      console.log(hours + ':' + minutes + ':' + seconds);
-      hoursText.innerHTML = '' + (hours % 12 < 10 ? '0' : ' ') + (hours % 12);
-      minutesText.innerHTML = '' + (minutes < 10 ? '0' : '') + minutes;
+      self.setState({
+        hoursText,
+        minutesText,
+        secondsDegrees,
+        minutesDegrees,
+        hoursDegrees,
+      });
     }
 
-    setInterval(setDate, 1000);
+    this.interval = setInterval(setDate, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
     return (
-      <div>
-        <div class="clock">
-          <div class="clock-face">
-            <div class="hand-container hour-face">
-              <div class="hand hour-hand" />
+      <div className="clock-container">
+        <div className="city-and-cross">
+          <span className="city">{this.props.city}</span>
+          <span
+            className="cross"
+            onClick={() => this.props.handleDelete(this.props.id)}
+          >
+            ❌
+          </span>
+        </div>
+        <div className="clock">
+          <div className="clock-face">
+            <div className="hand-container hour-face">
+              <div
+                className="hand hour-hand"
+                style={{ transform: `rotate(${this.state.hoursDegrees}deg)` }}
+              />
             </div>
-            <div class="hand-container min-face">
-              <div class="hand min-hand" />
+            <div className="hand-container min-face">
+              <div
+                className="hand min-hand"
+                style={{ transform: `rotate(${this.state.minutesDegrees}deg)` }}
+              />
             </div>
-            <div class="hand-container second-face">
-              <div class="hand second-hand" />
+            <div className="hand-container second-face">
+              <div
+                className="hand second-hand"
+                style={{ transform: `rotate(${this.state.secondsDegrees}deg)` }}
+              />
             </div>
-            <div class="center-peg" />
+            <div className="center-peg" />
           </div>
         </div>
-        <div class="digital">
+        <div className="digital">
           <h1>
-            <span id="hours">12</span>:<span id="minutes">00</span>
+            <span id="hours">{this.state.hoursText}</span>:
+            <span id="minutes">{this.state.minutesText}</span>
           </h1>
         </div>
       </div>
