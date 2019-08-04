@@ -9,11 +9,10 @@ export default function({ handleAdd }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(input.city, input.offset);
     if (
       input.city.length === 0 ||
       input.offset === 0 ||
-      Number.isNaN(input.offset)
+      isNaN(input.offset)
     )
       return alert('invalid input');
     handleAdd(input);
