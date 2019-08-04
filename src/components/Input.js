@@ -9,6 +9,13 @@ export default function({ handleAdd }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    console.log(input.city, input.offset);
+    if (
+      input.city.length === 0 ||
+      input.offset === 0 ||
+      Number.isNaN(input.offset)
+    )
+      return alert('invalid input');
     handleAdd(input);
     cityRef.current.value = '';
     offsetRef.current.value = '';
@@ -25,12 +32,12 @@ export default function({ handleAdd }) {
     <form className="input" onSubmit={handleSubmit}>
       <label htmlFor="city">City:</label>
       <input
-      className="city-input"
-      name="city"
-      onChange={handleChange}
-      id="city"
-      type="text"
-      ref={cityRef}
+        className="city-input"
+        name="city"
+        onChange={handleChange}
+        id="city"
+        type="text"
+        ref={cityRef}
       />
       <label htmlFor="offset">Offset:</label>
       <input
