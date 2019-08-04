@@ -1,5 +1,5 @@
-.App {
-  text-align: center;
+body {
+  justify-content: start !important;
 }
 
 .Watches {
@@ -7,7 +7,6 @@
   flex-direction: row;
   flex-wrap: wrap;
 }
-
 
 
 .App-logo {

@@ -1,17 +1,10 @@
 .watch-container {
-  width: 30rem;
-  border: 1px solid white;
-  margin: 1rem;
-}
-
-.city-and-cross {
-  color: white;
-  font-size: 3rem;
+  margin: 1rem 4rem;
   display: flex;
-  margin: 0 1rem;
-  justify-content: space-between;
+  flex-direction: column;
 }
 
-.cross {
-  cursor: pointer;
+.watches {
+  display: flex;
+  flex-wrap: wrap;
 }
