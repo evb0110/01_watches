@@ -1,0 +1,17 @@
+.watch-container {
+  width: 30rem;
+  border: 1px solid white;
+  margin: 1rem;
+}
+
+.city-and-cross {
+  color: white;
+  font-size: 3rem;
+  display: flex;
+  margin: 0 1rem;
+  justify-content: space-between;
+}
+
+.cross {
+  cursor: pointer;
+}
