@@ -11,34 +11,36 @@ export default class Watch extends React.Component {
     interval: null,
   };
 
+  constructor(props) {
+    super(props);
+    this.setDate = this.setDate.bind(this);
+  }
+
+  setDate() {
+    let now = new Date();
+
+    const seconds = now.getSeconds();
+    const minutes = now.getMinutes();
+    const hours = now.getHours() - this.props.moscowOffset + this.props.offset;
+
+    const secondsDegrees = (seconds / 60) * 360 + 90;
+    const minutesDegrees = (minutes / 60) * 360 + 90;
+    const hoursDegrees = (hours / 12) * 360 + 90;
+
+    const hoursText = '' + (hours % 12 < 10 ? '0' : ' ') + (hours % 12);
+    const minutesText = '' + (minutes < 10 ? '0' : '') + minutes;
+
+    this.setState({
+      hoursText,
+      minutesText,
+      secondsDegrees,
+      minutesDegrees,
+      hoursDegrees,
+    });
+  }
+
   componentDidMount() {
-    const self = this;
-
-    function setDate() {
-      let now = new Date();
-
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours =
-        now.getHours() - self.props.moscowOffset + self.props.offset;
-
-      const secondsDegrees = (seconds / 60) * 360 + 90;
-      const minutesDegrees = (minutes / 60) * 360 + 90;
-      const hoursDegrees = (hours / 12) * 360 + 90;
-
-      const hoursText = '' + (hours % 12 < 10 ? '0' : ' ') + (hours % 12);
-      const minutesText = '' + (minutes < 10 ? '0' : '') + minutes;
-
-      self.setState({
-        hoursText,
-        minutesText,
-        secondsDegrees,
-        minutesDegrees,
-        hoursDegrees,
-      });
-    }
-
-    this.interval = setInterval(setDate, 1000);
+    this.interval = setInterval(this.setDate, 1000);
   }
 
   componentWillUnmount() {
